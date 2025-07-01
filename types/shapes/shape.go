@@ -95,13 +95,7 @@ type Shape struct {
 // Make returns a Shape structure filled with the values given.
 // See MakeTuple for tuple shapes.
 func Make(dtype DType, dimensions ...int) Shape {
-	s := Shape{Dimensions: slices.Clone(dimensions), DType: dtype}
-	for _, dim := range dimensions {
-		if dim <= 0 {
-			exceptions.Panicf("shapes.Make(%s): cannot create a shape with an axis with dimension <= 0", s)
-		}
-	}
-	return s
+	return Shape{Dimensions: slices.Clone(dimensions), DType: dtype}
 }
 
 // Scalar returns a scalar Shape for the given type.

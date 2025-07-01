@@ -384,12 +384,10 @@ func ScatterUpdate(operand, indices, updates *Node, sorted, unique bool) *Node {
 
 	// Set operand positions being updated to 0.
 	zero := ScalarZero(g, dtype)
-	maskShape := shape.Clone()
-	maskShape.DType = dtypes.Bool
-	maskUpdates := ConvertDType(OnesLike(updates), dtypes.Bool)
-	updateMask := Scatter(indices, maskUpdates, maskShape, sorted, unique)
+	maskUpdates := OnesLike(updates)
+	updateMask := ConvertDType(Scatter(indices, maskUpdates, shape, sorted, unique), dtypes.Bool)
 	operand = Where(updateMask, zero, operand)
-	return ScatterSum(operand, indices, updates, sorted, true)
+	return ScatterSum(operand, indices, updates, sorted, unique)
 }
 
 // ScatterSum adds up the slices in updates into the given operand tensor, at the locations pointed by indices.
